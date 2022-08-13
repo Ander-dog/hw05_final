@@ -223,10 +223,12 @@ class PostViewTests(TestCase):
 
     def test_authorized_user_can_follow_another_user(self):
         """Один авторизированный пользователь может подписаться на другого."""
+        count = Follow.objects.check()
         self.follower_client.get(reverse(
             'posts:profile_follow',
             kwargs={'username': PostViewTests.user.username}
         ))
+        self.assertEqual(Follow.objects.check(), count + 1)
         self.assertTrue(
             Follow.objects.filter(
                 user=self.follower,
@@ -236,10 +238,12 @@ class PostViewTests(TestCase):
 
     def test_authorized_user_cant_follow_himself(self):
         """Авторизированный пользователь не может подписаться сам на себя."""
+        count = Follow.objects.check()
         self.follower_client.get(reverse(
             'posts:profile_follow',
             kwargs={'username': self.follower.username}
         ))
+        self.assertEqual(Follow.objects.check(), count)
         self.assertFalse(
             Follow.objects.filter(
                 user=self.follower,
@@ -249,6 +253,7 @@ class PostViewTests(TestCase):
 
     def test_authorized_user_can_unfollow(self):
         """Авторизированный пользователь может отписаться."""
+        count = Follow.objects.check()
         Follow.objects.create(
             user=self.follower,
             author=PostViewTests.user
@@ -257,6 +262,7 @@ class PostViewTests(TestCase):
             'posts:profile_unfollow',
             kwargs={'username': PostViewTests.user.username}
         ))
+        self.assertEqual(Follow.objects.check(), count - 1)
         self.assertFalse(
             Follow.objects.filter(
                 user=self.follower,
