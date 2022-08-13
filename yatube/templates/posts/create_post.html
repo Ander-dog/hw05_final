@@ -1,0 +1,13 @@
+{% extends 'extenders/card_base.html' %}
+{% block title %} {% if is_edit %}Редактирование поста {% else %}Новый пост {% endif %} {% endblock %}
+{% block card_header %} {% if is_edit %}Редактирование поста {% else %}Новый пост {% endif %} {% endblock %}
+{% block card_body %}
+<form method="post" enctype="multipart/form-data">
+  {% include 'includes/form.html' %}
+  <div class="d-flex justify-content-end">
+    <button type="submit" class="btn btn-primary">
+      {% if is_edit %}Сохранить изменения {% else %}Добавить запись {% endif %}
+    </button>
+  </div>
+</form>
+{% endblock %}

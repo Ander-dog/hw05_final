@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8 p-5">
+      <div class="card">
+        <div class="card-header">{% block card_header %} Тут должен быть header {% endblock %}</div>
+        <div class="card-body"> {% block card_body %} Тут должен быть body {% endblock %}
+        </div> <!-- card body -->
+      </div> <!-- card -->
+    </div> <!-- col -->
+  </div> <!-- row -->
+{% endblock %}
