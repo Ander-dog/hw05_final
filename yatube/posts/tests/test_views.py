@@ -9,6 +9,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
+from yatube.settings import PAGE_CAPACITY
+
 from ..models import Follow, Group, Post
 
 User = get_user_model()
@@ -345,7 +347,7 @@ class PostViewPaginatorTests(TestCase):
         на первую страницу главной страницы.
         """
         response = self.authorized_client.get(reverse('posts:index'))
-        self.assertEqual(len(response.context['page_obj']), 10)
+        self.assertEqual(len(response.context['page_obj']), PAGE_CAPACITY)
 
     def test_index_first_page_show_correct_context(self):
         """Paginator выводит правильные посты
@@ -387,7 +389,7 @@ class PostViewPaginatorTests(TestCase):
                         'posts:group_list',
                         kwargs={'slug': PostViewPaginatorTests.group.slug}
                     )))
-        self.assertEqual(len(response.context['page_obj']), 10)
+        self.assertEqual(len(response.context['page_obj']), PAGE_CAPACITY)
 
     def test_second_group_list_page_contains_five_records(self):
         """Paginator выводит правильное количество постов
@@ -411,7 +413,7 @@ class PostViewPaginatorTests(TestCase):
                             'username': PostViewPaginatorTests.user.username
                         }
                     )))
-        self.assertEqual(len(response.context['page_obj']), 10)
+        self.assertEqual(len(response.context['page_obj']), PAGE_CAPACITY)
 
     def test_second_profile_page_contains_six_records(self):
         """Paginator выводит правильное количество постов
@@ -435,7 +437,7 @@ class PostViewPaginatorTests(TestCase):
             author=PostViewPaginatorTests.user
         )
         response = self.follower_client.get(reverse('posts:follow_index'))
-        self.assertEqual(len(response.context['page_obj']), 10)
+        self.assertEqual(len(response.context['page_obj']), PAGE_CAPACITY)
 
     def test_second_index_follow_page_contains_six_records(self):
         """Paginator выводит правильное количество постов
